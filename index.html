@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Good Morning Dixon — Dixon, California · Est. 1878</title>
+  <meta name="description" content="The story of Dixon, California. 148 years of remarkable history. A train station built in 2007. A future worth fighting for."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+    :root {
+      --forest:     #0F2318;
+      --forest-mid: #172E20;
+      --forest-lt:  #1E3D28;
+      --forest-dim: #254D32;
+      --grove:      #2C5C3A;
+      --sage:       #4A7A58;
+      --gold:       #C49A20;
+      --gold-lt:    #DDB030;
+      --gold-pale:  #F5E8B0;
+      --gold-dim:   #8A6C10;
+      --cream:      #FAF6E8;
+      --warm:       #F5EDD4;
+      --parch:      #EDE0C0;
+      --paper:      #FDFAF0;
+      --white:      #FFFFFF;
+      --ink:        #0E1A0E;
+      --charcoal:   #1C2C1C;
+      --mid:        #3A4A38;
+      --muted:      #6A7A68;
+      --rule:       #C8D8C0;
+      --rule-dk:    #8AAA88;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      font-family: 'Merriweather', Georgia, serif;
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    .cur { width:8px;height:8px;border-radius:50%;background:var(--gold);position:fixed;top:0;left:0;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .18s,height .18s; }
+    .cur-r { width:28px;height:28px;border-radius:50%;border:1px solid rgba(196,154,32,.35);position:fixed;top:0;left:0;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .14s; }
+    #prog { position:fixed;top:0;left:0;z-index:9999;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-lt)); }
+
+    /* ════════════════════════
+       NAV
+    ════════════════════════ */
+    nav {
+      position:fixed;top:0;left:0;right:0;z-index:500;
+      height:56px;padding:0 64px;
+      display:flex;align-items:center;justify-content:space-between;
+      background:rgba(15,35,24,.97);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(196,154,32,.2);
+    }
+    .n-logo {
+      font-family:'Playfair Display',serif;
+      font-size:20px;font-weight:700;
+      color:var(--cream);letter-spacing:-.2px;
+    }
+    .n-logo em { font-style:italic;color:var(--gold); }
+    .n-links { display:flex;gap:32px; }
+    .n-links a {
+      font-family:'DM Sans',sans-serif;
+      font-size:10px;font-weight:500;
+      letter-spacing:.18em;text-transform:uppercase;
+      color:rgba(250,246,232,.4);text-decoration:none;
+      transition:color .15s;
+    }
+    .n-links a:hover { color:var(--gold); }
+    .n-est {
+      font-family:'DM Sans',sans-serif;
+      font-size:9px;font-weight:500;
+      letter-spacing:.22em;text-transform:uppercase;
+      color:rgba(196,154,32,.5);
+    }
+
+    /* ════════════════════════
+       OPENING — full cinematic
+    ════════════════════════ */
+    .opening {
+      min-height:100vh;
+      background:var(--forest);
+      display:grid;grid-template-rows:1fr auto;
+      position:relative;overflow:hidden;
+    }
+
+    /* Gold grain texture overlay */
+    .opening::before {
+      content:'';
+      position:absolute;inset:0;
+      background:
+        radial-gradient(ellipse 65% 65% at 15% 55%, rgba(30,55,20,.8) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 55% at 85% 25%, rgba(196,154,32,.06) 0%, transparent 55%);
+    }
+
+    /* Watermark year */
+    .o-wm {
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-42%,-54%);
+      font-family:'Playfair Display',serif;
+      font-size:clamp(240px,34vw,520px);
+      font-weight:900;font-style:italic;
+      line-height:1;letter-spacing:-16px;
+      color:rgba(196,154,32,.04);
+      pointer-events:none;user-select:none;
+    }
+
+    /* Vertical gold accent */
+    .o-vline {
+      position:absolute;top:0;bottom:0;left:64px;
+      width:2px;
+      background:linear-gradient(180deg,transparent,var(--gold) 20%,var(--gold) 80%,transparent);
+      opacity:.3;
+    }
+
+    .o-inner {
+      position:relative;z-index:2;
+      padding:110px 64px 64px 96px;
+      display:flex;flex-direction:column;justify-content:flex-end;
+      max-width:1080px;
+    }
+
+    .o-kicker {
+      display:flex;align-items:center;gap:14px;
+      margin-bottom:32px;
+      opacity:0;animation:aUp .8s .25s ease forwards;
+    }
+    .o-dot { width:7px;height:7px;border-radius:50%;background:var(--gold);animation:blink 2.4s infinite; }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+    .o-kicker span { font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:rgba(250,246,232,.35); }
+    .o-kicker strong { color:var(--gold);font-weight:500; }
+
+    .o-h1 {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(72px,11.5vw,164px);
+      font-weight:900;line-height:.86;
+      letter-spacing:-4px;color:var(--cream);
+    }
+    .ol1 { display:block;opacity:0;animation:aUp .9s .38s ease forwards; }
+    .ol2 { display:block;font-style:italic;font-weight:700;color:var(--gold);opacity:0;animation:aUp .9s .54s ease forwards; }
+    .ol3 { display:block;opacity:0;animation:aUp .9s .7s ease forwards; }
+
+    .o-divider {
+      display:flex;align-items:center;gap:16px;
+      margin:40px 0 36px;
+      opacity:0;animation:aFade .8s .9s ease forwards;
+    }
+    .o-div-line { flex:1;height:1px;background:rgba(196,154,32,.25); }
+    .o-div-orn { font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);opacity:.4;letter-spacing:8px; }
+
+    .o-desc {
+      font-family:'Merriweather',serif;
+      font-size:clamp(14px,1.6vw,18px);
+      font-weight:300;line-height:1.85;
+      color:rgba(250,246,232,.48);
+      max-width:600px;
+      opacity:0;animation:aFade .9s 1.08s ease forwards;
+    }
+    .o-desc strong { color:rgba(250,246,232,.82);font-weight:400; }
+
+    /* Bottom facts strip */
+    .o-strip {
+      position:relative;z-index:2;
+      display:flex;
+      background:rgba(0,0,0,.3);
+      border-top:1px solid rgba(196,154,32,.12);
+      opacity:0;animation:aFade .8s 1.5s ease forwards;
+    }
+    .o-sf {
+      flex:1;padding:20px 24px;text-align:center;
+      border-right:1px solid rgba(196,154,32,.1);
+    }
+    .o-sf:last-child{border-right:none;}
+    .osf-n { font-family:'Playfair Display',serif;font-size:34px;font-weight:900;color:var(--cream);line-height:1;margin-bottom:4px; }
+    .osf-n em { font-style:italic;color:var(--gold); }
+    .osf-l { font-family:'DM Sans',sans-serif;font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(250,246,232,.28); }
+
+    /* ════════════════════════
+       TICKER
+    ════════════════════════ */
+    .ticker {
+      background:var(--gold);
+      padding:11px 0;overflow:hidden;
+      display:flex;align-items:center;
+    }
+    .t-badge {
+      font-family:'DM Sans',sans-serif;
+      font-size:9px;font-weight:700;
+      letter-spacing:.22em;text-transform:uppercase;
+      background:var(--forest);color:var(--gold);
+      padding:4px 20px 4px 64px;white-space:nowrap;flex-shrink:0;
+      clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);
+    }
+    .t-track { display:flex;gap:64px;white-space:nowrap;padding-left:28px; }
+    .t-item {
+      font-family:'DM Sans',sans-serif;
+      font-size:12px;font-weight:600;
+      letter-spacing:.07em;
+      color:rgba(15,35,24,.85);
+      display:flex;align-items:center;gap:10px;
+    }
+    .t-item::before{content:'◆';font-size:7px;opacity:.5;}
+
+    /* ════════════════════════
+       SHARED SECTION SYSTEM
+    ════════════════════════ */
+    .s { padding:108px 64px; }
+    .s-paper  { background:var(--paper); }
+    .s-warm   { background:var(--warm); }
+    .s-cream  { background:var(--cream); }
+    .s-parch  { background:var(--parch); }
+    .s-forest { background:var(--forest);color:var(--cream); }
+    .s-grove  { background:var(--grove);color:var(--cream); }
+    .s-ink    { background:var(--ink);color:var(--cream); }
+    .s-gold   { background:var(--gold); }
+
+    .ch-label {
+      font-family:'DM Sans',sans-serif;
+      font-size:9px;font-weight:600;
+      letter-spacing:.3em;text-transform:uppercase;
+      color:var(--gold-dim);
+      display:flex;align-items:center;gap:10px;
+      margin-bottom:16px;
+    }
+    .ch-label::after{content:'';width:20px;height:1.5px;background:var(--gold-dim);}
+    .ch-label.inv{color:rgba(196,154,32,.6);}
+    .ch-label.inv::after{background:rgba(196,154,32,.4);}
+
+    .s-h {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(38px,5.5vw,72px);
+      font-weight:900;line-height:.96;letter-spacing:-1.5px;
+      color:var(--ink);margin-bottom:56px;
+    }
+    .s-h em{font-style:italic;font-weight:700;color:var(--gold-dim);}
+    .s-h.lt{color:var(--cream);}
+    .s-h.lt em{color:var(--gold);}
+
+    .prose {
+      font-family:'Merriweather',serif;
+      font-size:16px;line-height:1.9;font-weight:300;
+      color:var(--mid);
+    }
+    .prose p{margin-bottom:18px;}
+    .prose p:last-child{margin-bottom:0;}
+    .prose strong{color:var(--ink);font-weight:700;}
+    .prose.lt{color:rgba(250,246,232,.6);}
+    .prose.lt strong{color:var(--cream);font-weight:400;}
+
+    /* Drop cap */
+    .drop::first-letter {
+      font-family:'Playfair Display',serif;
+      font-size:5.2em;font-weight:900;font-style:italic;
+      float:left;line-height:.72;
+      margin:6px 8px -2px 0;
+      color:var(--gold-dim);
+    }
+
+    /* Block quote */
+    .bq {
+      border-left:4px solid var(--gold);
+      padding:16px 24px;margin:24px 0;
+      background:rgba(196,154,32,.06);
+    }
+    .bq p{font-style:italic;font-size:17px;color:var(--charcoal);line-height:1.6;}
+    .bq.inv{background:rgba(196,154,32,.08);border-color:rgba(196,154,32,.5);}
+    .bq.inv p{color:rgba(250,246,232,.8);}
+
+    /* ════════════════════════
+       CHAPTER: THE LAND
+    ════════════════════════ */
+    .land-split {
+      display:grid;grid-template-columns:3fr 2fr;
+      gap:72px;align-items:start;
+    }
+    .land-panel {
+      background:var(--forest);
+      padding:40px 36px;
+      border-left:4px solid var(--gold);
+      position:relative;overflow:hidden;
+    }
+    .land-panel::after {
+      content:'';
+      position:absolute;inset:0;
+      background:radial-gradient(ellipse 80% 60% at 0% 50%, rgba(40,80,40,.4) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .lp-label{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;position:relative;z-index:1;}
+    .lp-h{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--cream);line-height:1.2;margin-bottom:14px;position:relative;z-index:1;}
+    .lp-body{font-family:'Merriweather',serif;font-size:13.5px;line-height:1.85;color:rgba(250,246,232,.55);font-weight:300;position:relative;z-index:1;}
+    .lp-body strong{color:rgba(250,246,232,.85);font-weight:400;}
+
+    /* ════════════════════════
+       CHAPTER: THE FOUNDING
+    ════════════════════════ */
+    .founding-split {
+      display:grid;grid-template-columns:1fr 1fr;
+      min-height:85vh;
+    }
+    .fs-left {
+      padding:108px 72px 80px 64px;
+      display:flex;flex-direction:column;justify-content:center;
+      border-right:1px solid var(--rule);
+    }
+    .fs-right {
+      background:var(--warm);
+      padding:108px 64px 80px 72px;
+      display:flex;flex-direction:column;justify-content:center;
+      position:relative;overflow:hidden;
+    }
+    .fs-right::after {
+      content:'1878';
+      position:absolute;bottom:-32px;right:-12px;
+      font-family:'Playfair Display',serif;
+      font-size:240px;font-weight:900;font-style:italic;
+      color:rgba(15,35,24,.05);line-height:1;pointer-events:none;
+    }
+
+    /* Timeline row */
+    .timeline-row {
+      display:flex;gap:0;
+      border:1px solid var(--rule);border-top:none;
+    }
+    .tr-item {
+      flex:1;padding:28px 24px;text-align:center;
+      border-right:1px solid var(--rule);
+      background:var(--paper);
+      transition:background .2s;
+    }
+    .tr-item:last-child{border-right:none;}
+    .tr-item:hover{background:var(--cream);}
+    .tr-n{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;font-style:italic;color:var(--gold-dim);line-height:1;margin-bottom:4px;}
+    .tr-l{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+
+    /* ════════════════════════
+       CHAPTER: HERITAGE
+    ════════════════════════ */
+    .heritage-cards {
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:2px;background:rgba(196,154,32,.12);
+      border:1px solid rgba(196,154,32,.12);
+      margin-bottom:2px;
+    }
+    .hc {
+      background:rgba(250,246,232,.04);
+      padding:44px 32px;
+      position:relative;overflow:hidden;
+      transition:background .2s;
+    }
+    .hc:hover{background:rgba(250,246,232,.09);}
+    .hc::before {
+      content:'';
+      position:absolute;top:0;left:0;right:0;height:3px;
+      background:var(--gold);
+      transform:scaleX(0);transform-origin:left;
+      transition:transform .3s;
+    }
+    .hc:hover::before{transform:scaleX(1);}
+    .hc-yr{font-family:'Playfair Display',serif;font-size:64px;font-weight:900;font-style:italic;color:rgba(196,154,32,.12);line-height:1;margin-bottom:10px;}
+    .hc-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);line-height:1.2;margin-bottom:10px;}
+    .hc-body{font-family:'Merriweather',serif;font-size:13px;line-height:1.85;color:rgba(250,246,232,.5);font-weight:300;}
+    .hc-body strong{color:rgba(250,246,232,.82);font-weight:400;}
+
+    /* Stats strip */
+    .stats-strip{display:flex;background:var(--gold);}
+    .ss{flex:1;padding:28px 20px;text-align:center;border-right:1px solid rgba(15,35,24,.12);transition:background .2s;}
+    .ss:last-child{border-right:none;}
+    .ss:hover{background:rgba(255,255,255,.1);}
+    .ss-n{font-family:'Playfair Display',serif;font-size:50px;font-weight:900;color:var(--forest);line-height:1;margin-bottom:4px;}
+    .ss-l{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(15,35,24,.55);}
+
+    /* ════════════════════════
+       THE PULL QUOTE
+    ════════════════════════ */
+    .quote-sec {
+      background:var(--forest-mid);
+      padding:100px 64px;
+      position:relative;overflow:hidden;
+    }
+    .quote-sec::before {
+      content:'\201C';
+      position:absolute;top:-80px;left:36px;
+      font-family:'Playfair Display',serif;
+      font-size:560px;font-weight:900;line-height:1;
+      color:rgba(196,154,32,.04);pointer-events:none;
+    }
+    .quote-sec::after {
+      content:'';
+      position:absolute;top:0;left:0;bottom:0;width:5px;
+      background:linear-gradient(180deg,transparent,var(--gold) 20%,var(--gold) 80%,transparent);
+    }
+    .qs-inner{max-width:900px;padding-left:48px;position:relative;}
+    .qs-text {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(28px,4.5vw,58px);
+      font-weight:700;line-height:1.18;letter-spacing:-.5px;
+      color:var(--cream);
+    }
+    .qs-text em{font-style:italic;font-weight:400;color:var(--gold);}
+    .qs-attr{margin-top:36px;display:flex;align-items:center;gap:14px;}
+    .qs-line{width:28px;height:2px;background:var(--gold);}
+    .qs-attr span{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,246,232,.25);}
+
+    /* ════════════════════════
+       THE TRAIN
+    ════════════════════════ */
+    .train-wrap {
+      background:var(--ink);
+      position:relative;overflow:hidden;
+    }
+    /* Gold railroad track decoration */
+    .train-track {
+      position:absolute;bottom:0;left:0;right:0;height:8px;
+      background:repeating-linear-gradient(90deg,rgba(196,154,32,.12) 0px,rgba(196,154,32,.12) 44px,transparent 44px,transparent 64px);
+    }
+
+    .t-open{padding:100px 64px 64px;position:relative;z-index:1;}
+
+    /* Giant zero section */
+    .t-zero {
+      background:rgba(196,154,32,.05);
+      border-top:1px solid rgba(196,154,32,.1);
+      border-bottom:1px solid rgba(196,154,32,.1);
+      padding:80px 64px;
+      position:relative;z-index:1;
+      display:grid;grid-template-columns:auto 1fr;
+      gap:80px;align-items:center;
+    }
+    .tz-num{text-align:center;}
+    .tz-n {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(140px,20vw,260px);
+      font-weight:900;font-style:italic;
+      line-height:1;display:block;
+      color:var(--gold);
+      text-shadow:0 0 80px rgba(196,154,32,.2);
+    }
+    .tz-l{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(196,154,32,.4);margin-top:8px;line-height:1.6;}
+
+    .tz-statement{}
+    .tzs-h{font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,40px);font-weight:700;line-height:1.15;color:var(--cream);margin-bottom:20px;}
+    .tzs-h em{font-style:italic;color:var(--gold);}
+    .tzs-prose{font-family:'Merriweather',serif;font-size:15px;line-height:1.9;font-weight:300;color:rgba(250,246,232,.55);}
+    .tzs-prose p{margin-bottom:14px;}
+    .tzs-prose p:last-child{margin-bottom:0;}
+    .tzs-prose strong{color:rgba(250,246,232,.85);font-weight:400;}
+
+    /* Train facts */
+    .t-facts {
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:2px;background:rgba(196,154,32,.08);
+      position:relative;z-index:1;
+    }
+    .tf{background:rgba(255,255,255,.025);padding:32px 28px;border-right:1px solid rgba(196,154,32,.08);transition:background .2s;}
+    .tf:last-child{border-right:none;}
+    .tf:hover{background:rgba(255,255,255,.06);}
+    .tf-n{font-family:'Playfair Display',serif;font-size:50px;font-weight:900;color:rgba(250,246,232,.75);line-height:1;margin-bottom:8px;}
+    .tf-n em{font-style:italic;color:var(--gold);}
+    .tf-l{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(250,246,232,.3);line-height:1.6;}
+
+    /* Demand block */
+    .t-demand {
+      background:var(--gold);
+      padding:44px 64px;
+      position:relative;z-index:1;
+    }
+    .td-label{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(15,35,24,.55);margin-bottom:14px;}
+    .td-text{font-family:'Playfair Display',serif;font-size:clamp(20px,2.8vw,34px);font-weight:700;font-style:italic;color:var(--forest);line-height:1.38;max-width:900px;}
+
+    /* ════════════════════════
+       THE FUTURE
+    ════════════════════════ */
+    .vision-grid {
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:2px;background:var(--rule);
+      border:1px solid var(--rule);
+    }
+    .vc {
+      background:var(--paper);padding:44px 32px;
+      position:relative;overflow:hidden;
+      transition:background .2s,transform .2s;
+    }
+    .vc:hover{background:var(--cream);transform:translateY(-4px);box-shadow:0 8px 32px rgba(15,35,24,.08);}
+    .vc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+    .vc:hover::before{transform:scaleX(1);}
+    .vc-n{font-family:'Playfair Display',serif;font-size:88px;font-weight:900;font-style:italic;color:rgba(15,35,24,.04);line-height:1;position:absolute;top:4px;right:8px;}
+    .vc-ico{font-size:28px;margin-bottom:18px;display:block;}
+    .vc-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.15;}
+    .vc-body{font-family:'Merriweather',serif;font-size:13px;line-height:1.85;color:var(--muted);font-weight:300;}
+    .vc-body strong{color:var(--mid);font-weight:700;}
+
+    /* ════════════════════════
+       CLOSING
+    ════════════════════════ */
+    .close-wrap{
+      background:var(--forest);
+      padding:120px 64px;
+      position:relative;overflow:hidden;
+    }
+    .close-wrap::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse 60% 55% at 10% 65%, rgba(20,50,20,.7) 0%, transparent 60%);
+    }
+    /* Gold leaf decoration */
+    .close-wrap::after{
+      content:'G';
+      position:absolute;bottom:-60px;right:-20px;
+      font-family:'Playfair Display',serif;
+      font-size:500px;font-weight:900;font-style:italic;
+      color:rgba(196,154,32,.04);line-height:1;pointer-events:none;
+    }
+    .close-inner{max-width:820px;position:relative;z-index:1;}
+    .close-h{font-family:'Playfair Display',serif;font-size:clamp(32px,5.5vw,72px);font-weight:900;line-height:.96;letter-spacing:-1.5px;color:var(--cream);margin-bottom:32px;}
+    .close-h em{font-style:italic;color:var(--gold);}
+    .close-prose{font-family:'Merriweather',serif;font-size:17px;line-height:1.9;font-weight:300;color:rgba(250,246,232,.52);}
+    .close-prose p{margin-bottom:20px;}
+    .close-prose strong{color:rgba(250,246,232,.85);font-weight:400;}
+    .close-sig{margin-top:52px;padding-top:32px;border-top:1px solid rgba(196,154,32,.15);display:flex;align-items:center;gap:20px;}
+    .cs-mark{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;font-style:italic;color:var(--gold);line-height:1;}
+    .cs-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);line-height:1;margin-bottom:4px;}
+    .cs-role{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(196,154,32,.4);}
+    .cs-role a{color:var(--gold);text-decoration:none;}
+
+    /* ── FOOTER ── */
+    footer{background:var(--ink);border-top:2px solid rgba(196,154,32,.2);padding:28px 64px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+    .f-logo{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:rgba(250,246,232,.5);}
+    .f-logo em{font-style:italic;color:var(--gold);}
+    .f-legal{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,246,232,.18);}
+    .f-legal a{color:var(--gold);text-decoration:none;}
+
+    /* ── ANIMATIONS ── */
+    @keyframes aUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes aFade{from{opacity:0}to{opacity:1}}
+    .rev{opacity:0;transform:translateY(16px);transition:opacity .75s ease,transform .75s ease;}
+    .rev.on{opacity:1;transform:translateY(0);}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px){
+      .s,.quote-sec,.t-open,.t-demand,.t-zero,.close-wrap,footer{padding-left:40px;padding-right:40px;}
+      nav{padding:0 24px;}
+      .o-inner{padding:80px 40px 56px 64px;}
+      .land-split{grid-template-columns:1fr;}
+      .founding-split{grid-template-columns:1fr;}
+      .fs-right{display:none;}
+      .heritage-cards{grid-template-columns:1fr 1fr;}
+      .stats-strip{flex-wrap:wrap;}
+      .ss{min-width:50%;}
+      .t-facts{grid-template-columns:repeat(2,1fr);}
+      .t-zero{grid-template-columns:1fr;gap:40px;}
+      .vision-grid{grid-template-columns:1fr;}
+      .o-strip{flex-wrap:wrap;}
+      .o-sf{min-width:50%;}
+    }
+    @media(max-width:640px){
+      body{cursor:auto;}
+      .cur,.cur-r{display:none;}
+      .n-links{display:none;}
+      nav{padding:0 20px;}
+      .s,.quote-sec,.t-open,.t-demand,.t-zero,.close-wrap,footer{padding-left:24px;padding-right:24px;}
+      .o-inner{padding:80px 24px 48px 44px;}
+      .heritage-cards{grid-template-columns:1fr;}
+      .t-facts{grid-template-columns:1fr 1fr;}
+      .timeline-row{flex-wrap:wrap;}
+      .tr-item{min-width:50%;}
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="cur" id="cur"></div>
+  <div class="cur-r" id="cr"></div>
+  <div id="prog"></div>
+
+  <!-- NAV -->
+
+  <nav>
+    <div class="n-logo">Good Morning <em>Dixon</em></div>
+    <div class="n-links">
+      <a href="#land">The Land</a>
+      <a href="#founding">The Founding</a>
+      <a href="#heritage">Our Heritage</a>
+      <a href="#train">The Train</a>
+      <a href="#future">The Future</a>
+    </div>
+    <div class="n-est">Dixon, CA · Est. 1878</div>
+  </nav>
+
+  <!-- ══════════════
+       OPENING
+  ══════════════ -->
+
+  <section class="opening">
+    <div class="o-wm">1878</div>
+    <div class="o-vline"></div>
+
+```
+<div class="o-inner">
+  <div class="o-kicker">
+    <div class="o-dot"></div>
+    <span>Dixon, California &nbsp;·&nbsp; <strong>Good Morning Dixon</strong> &nbsp;·&nbsp; The Independent Gazette</span>
+  </div>
+  <h1 class="o-h1">
+    <span class="ol1">Good</span>
+    <span class="ol2">Morning,</span>
+    <span class="ol3">Dixon.</span>
+  </h1>
+  <div class="o-divider">
+    <div class="o-div-line"></div>
+    <div class="o-div-orn">✦ ✦ ✦</div>
+    <div class="o-div-line"></div>
+  </div>
+  <p class="o-desc">
+    There is a city 23 miles from Sacramento with a <strong>148-year history</strong> most of California doesn't know. California's oldest district fair. A World War II broadcast station that reached the Pacific. A Guinness World Record. And a train station — <strong>completed in 2007</strong> — past which every Capitol Corridor train runs, every single day, without stopping.<br/><br/>This is that city. This is its story.
+  </p>
+</div>
+
+<div class="o-strip">
+  <div class="o-sf"><div class="osf-n">1878</div><div class="osf-l">Incorporated</div></div>
+  <div class="o-sf"><div class="osf-n">148</div><div class="osf-l">Years as a City</div></div>
+  <div class="o-sf"><div class="osf-n">~20<em>K</em></div><div class="osf-l">Residents &amp; Growing</div></div>
+  <div class="o-sf"><div class="osf-n" style="color:var(--gold);">0</div><div class="osf-l">Train Stops Since 2007</div></div>
+  <div class="o-sf"><div class="osf-n">#1</div><div class="osf-l">Oldest Fair in California</div></div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="t-badge">Dixon This Week</div>
+  <div class="t-track" id="ticker">
+    <div class="t-item">Founded 1878 · Dixon Moved Itself to Meet the Railroad</div>
+    <div class="t-item">California's Oldest District Fair · Running Since 1875</div>
+    <div class="t-item">Dixon Built a Train Station in 2007 · Zero Trains Have Ever Stopped</div>
+    <div class="t-item">Lamb Capital of the World · Our Agricultural Legacy</div>
+    <div class="t-item">Voice of America · Dixon Broadcast to the Pacific in WWII</div>
+    <div class="t-item">Jon Pardi · Country Star · Dixon's Own</div>
+    <div class="t-item">60-Acre Corn Maze · Guinness World Record · Right Here</div>
+    <div class="t-item">Capitol Corridor · 15 Trains Pass Daily Without Stopping</div>
+    <div class="t-item">March 30, 1878 · The Day Dixon Became a City</div>
+  </div>
+</div>
+```
+
+  </section>
+
+  <!-- ══════════════
+       THE LAND
+  ══════════════ -->
+
+  <section class="s s-warm" id="land">
+    <div class="ch-label rev">Chapter One · Before Everything</div>
+    <h2 class="s-h rev">The Wintun–Patwin People<br>Were Here <em>First.</em></h2>
+    <div class="land-split">
+      <div class="prose rev">
+        <p class="drop">The first inhabitants of the Dixon area were the <strong>Wintun, known as the Patwin</strong> — a name derived from their own word meaning "native people." Their territory extended 90 miles from north to south and 40 miles from east to west, encompassing the Sacramento River valley and surrounding hills from Princeton in the north to the San Pablo and Suisun Bays in the south — the precise land on which every city in this corridor now stands.</p>
+        <p>The Wintun were, by every historical account, a peaceful people. They built their villages from willow branches covered in dried tule reeds. They fished the abundant waterways, gathered acorns from groves they tended carefully across generations, and wove baskets of extraordinary craft. Their settlements numbered more than 50 across this territory. They had lived in stewardship with this valley for thousands of years before any European set foot in California.</p>
+        <div class="bq rev">
+          <p>"The Yocha Dehe Wintun Nation — whose ancestors were the Patwin people of this region — continues its mission of language revitalization, cultural preservation, and protection of sacred sites across Yolo, Solano, Colusa, and Lake Counties today. Their story is the first chapter of Dixon's story. It will always be told here first."</p>
+        </div>
+        <p>Good Morning Dixon will not treat the Patwin history as a prologue to be cleared away before the "real" story begins. This gazette is in the process of reaching out directly to the Yocha Dehe Wintun Nation to ensure that what is written here is accurate, respectful, and worthy of the history it attempts to honor.</p>
+      </div>
+      <div class="rev" style="transition-delay:.12s">
+        <div class="land-panel">
+          <div class="lp-label">The Yocha Dehe Wintun Nation Today</div>
+          <div class="lp-h">The Federally Recognized Tribal Nation of the Patwin People</div>
+          <p class="lp-body">The <strong>Yocha Dehe Wintun Nation</strong> is headquartered in Brooks, CA — approximately 25 miles from Dixon. Their mission encompasses the revitalization of the Patwin language, the protection of sacred sites, and the preservation of a culture that has endured for thousands of years on this land. Three federally recognized Patwin tribes exist in this region. Their continued presence is not history — it is the living present. Any honest account of this valley begins and ends with acknowledging them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════
+       THE FOUNDING
+  ══════════════ -->
+
+  <section style="background:var(--paper);padding:0;" id="founding">
+    <div class="founding-split">
+      <div class="fs-left">
+        <div class="ch-label rev">Chapter Two · 1852–1878</div>
+        <h2 class="s-h rev" style="font-size:clamp(30px,4.5vw,58px);">The City That Packed Up and <em>Moved Itself</em> to the Future.</h2>
+        <div class="prose rev">
+          <p class="drop">The European settlement that would become Dixon began as <strong>Silveyville</strong>, founded in 1852 by Elijah Silvey as a stopping point for miners traveling between the Pacific coast and Sacramento's gold fields. For nearly two decades, Silveyville thrived on that trade — until the railroad arrived and changed everything.</p>
+          <p>In 1868, the Central Pacific Railroad laid its tracks through Solano County and missed Silveyville by several miles. Dixon's founding generation did not complain. They did not petition. They moved. Buildings were relocated. Streets were laid. One of the first structures from that 1871 move — the <strong>Dixon Methodist Church at 209 N. Jefferson Street</strong> — still stands in Dixon today.</p>
+          <div class="bq rev">
+            <p>"Thomas Dickson donated 10 acres of his land for a railroad depot. The settlement was named Dicksville in his honor — until the first shipment from San Francisco arrived addressed simply to 'Dixon.' After two years of informal use, Dickson himself endorsed the simpler name."</p>
+          </div>
+          <p>On <strong>March 30, 1878</strong>, Dixon was formally incorporated as a city through a special act of the California Legislature, with an initial population of approximately 300 residents — one of the oldest incorporated cities in Solano County, built from the very first moment on the conviction that you do not wait for opportunity. You go to meet it.</p>
+        </div>
+      </div>
+      <div class="fs-right">
+        <div class="ch-label rev" style="color:var(--gold-dim);">The Agricultural Capital</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,46px);font-weight:900;line-height:.97;letter-spacing:-1px;color:var(--ink);margin-bottom:28px;" class="rev">From Gold Rush Waystation to <em style="font-style:italic;color:var(--gold-dim);">California City.</em></h3>
+        <div class="prose rev">
+          <p>Dixon grew quickly into one of Northern California's premier agricultural centers, shipping grain, wool, and livestock to Bay Area markets. The fertile Solano County soil produced wheat, barley, and the diverse crops that define Dixon's identity today.</p>
+          <p>Dixon earned its title as the <strong>Lamb Capital of the World</strong> through generations of sheep ranching that made Solano County famous across American agricultural markets. That identity — practical, hardworking, deeply rooted in the land — remains the foundation of everything this city is and everything it can become.</p>
+        </div>
+      </div>
+    </div>
+
+```
+<!-- Timeline row -->
+<div class="timeline-row">
+  <div class="tr-item rev"><div class="tr-n">1852</div><div class="tr-l">Silveyville Founded</div></div>
+  <div class="tr-item rev" style="transition-delay:.06s"><div class="tr-n">1868</div><div class="tr-l">Railroad Arrives — City Moves</div></div>
+  <div class="tr-item rev" style="transition-delay:.12s"><div class="tr-n">1871</div><div class="tr-l">Dicksville Established</div></div>
+  <div class="tr-item rev" style="transition-delay:.18s"><div class="tr-n">1878</div><div class="tr-l">March 30 — Incorporated</div></div>
+</div>
+```
+
+  </section>
+
+  <!-- ══════════════
+       HERITAGE
+  ══════════════ -->
+
+  <section class="s s-forest" id="heritage">
+    <div class="ch-label inv rev">Chapter Three · A Century of Making History</div>
+    <h2 class="s-h lt rev">148 Years of Building<br><em>Something Worth Knowing.</em></h2>
+    <div class="heritage-cards">
+      <div class="hc rev">
+        <div class="hc-yr">1875</div>
+        <div class="hc-title">California's Oldest District Fair</div>
+        <p class="hc-body">The <strong>Dixon May Fair</strong> began as a May Day picnic celebration in 1875 and has run continuously ever since — California's oldest district fair and home to the longest-running state-affiliated parade in the state. Every May, Dixon becomes the center of this region. A stage on the fairgrounds bears the name of <strong>Jon Pardi</strong> — the country star who grew up in Dixon and whose music has reached every corner of America. He hasn't forgotten where he came from.</p>
+      </div>
+      <div class="hc rev" style="transition-delay:.08s">
+        <div class="hc-yr">1944</div>
+        <div class="hc-title">Dixon Broadcast to the World</div>
+        <p class="hc-body">NBC built a <strong>Voice of America shortwave transmitter site</strong> in Dixon during World War II — broadcasting under call signs KNBA, KNBH, KNBI, KNBC, and KNBX to allied nations across the Pacific. Dixon's signal reached Japan and the Philippines during the defining hour of the 20th century. There is also a <strong>Dixon Naval Radio Transmitter Facility</strong> still active today. This city was America's voice to the world at its most critical moment. That is not a footnote. It is a fact of history.</p>
+      </div>
+      <div class="hc rev" style="transition-delay:.16s">
+        <div class="hc-yr">2014</div>
+        <div class="hc-title">A Guinness World Record</div>
+        <p class="hc-body">Dixon residents Matt and Mark Cooley, owners of <strong>Cool Patch Pumpkins</strong>, hold the Guinness World Record for the world's largest corn maze — <strong>60 acres</strong>, set in 2014 after they broke their own prior record of 53 acres in 2012. The same creative drive that moved a city to a railroad in 1868 is still here, still building, still breaking records. The <strong>Jackson Fay Brown House and the Dixon Carnegie Library</strong> are on the National Register of Historic Places.</p>
+      </div>
+    </div>
+    <div class="stats-strip rev">
+      <div class="ss"><div class="ss-n">148</div><div class="ss-l">Years as an Incorporated City</div></div>
+      <div class="ss"><div class="ss-n">150+</div><div class="ss-l">Years of the Dixon May Fair</div></div>
+      <div class="ss"><div class="ss-n">60</div><div class="ss-l">Acre World Record Corn Maze</div></div>
+      <div class="ss"><div class="ss-n">#1</div><div class="ss-l">Oldest District Fair in California</div></div>
+    </div>
+  </section>
+
+  <!-- ══════════════
+       BIG QUOTE
+  ══════════════ -->
+
+  <div class="quote-sec rev">
+    <div class="qs-inner">
+      <div class="qs-text">
+        "Dixon didn't wait for the railroad.<br/>
+        It moved <em>an entire city</em> to meet it.<br/>
+        That instinct is still in these bones.<br/>
+        The question for this generation<br/>
+        is whether the <em>leadership is too."</em>
+      </div>
+      <div class="qs-attr">
+        <div class="qs-line"></div>
+        <span>Good Morning Dixon &nbsp;·&nbsp; The Independent Gazette &nbsp;·&nbsp; Dixon, California</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════
+       THE TRAIN
+  ══════════════ -->
+
+  <section class="train-wrap" id="train">
+    <div class="train-track"></div>
+
+```
+<div class="t-open">
+  <div class="ch-label inv rev">Chapter Four · The Great Injustice · Est. 2007</div>
+  <h2 class="s-h lt rev" style="margin-bottom:28px;">Dixon Built a Train Station.<br><em>Not One Train Has Ever Stopped.</em></h2>
+  <div class="tzs-prose rev" style="max-width:680px;">
+    <p>This is not hyperbole. This is a documented, verifiable, nineteen-year failure of political will — and it is the single most clarifying fact about Dixon's relationship with the institutions that are supposed to serve it.</p>
+  </div>
+</div>
+
+<!-- Big zero -->
+<div class="t-zero">
+  <div class="tz-num rev">
+    <span class="tz-n">0</span>
+    <div class="tz-l">Scheduled Capitol Corridor<br/>stops in Dixon since 2007</div>
+  </div>
+  <div class="tz-statement rev" style="transition-delay:.1s">
+    <div class="tzs-h">The city that moved itself to a railroad in 1868 is being <em>passed over by that railroad</em> in 2026.</div>
+    <div class="tzs-prose">
+      <p>In 2007, the City of Dixon completed construction of a replica of the original Dixon train station — built with State redevelopment money directly on the Capitol Corridor line, with a clear stated intent: to become an active stop on Capitol Corridor service between Sacramento and the Bay Area.</p>
+      <p>That was 2007. Today, <strong>15 Capitol Corridor round trips per weekday</strong> pass through Dixon — through the heart of this city, past that station, past those empty platforms — continuing to Davis and Fairfield–Vacaville without stopping.</p>
+      <p>Dixon residents who need the Capitol Corridor must drive to another city to board it. They add miles, time, and cost to a commute that station was built to eliminate. A Dixon stop is <strong>officially proposed in the Capitol Corridor Vision Plan.</strong> The infrastructure exists. The case is made. What is missing is the political will to demand it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Facts -->
+<div class="t-facts">
+  <div class="tf rev"><div class="tf-n">15<em>+</em></div><div class="tf-l">Capitol Corridor round trips per weekday pass through Dixon without stopping</div></div>
+  <div class="tf rev" style="transition-delay:.07s"><div class="tf-n">2007</div><div class="tf-l">Year Dixon completed its Capitol Corridor replica station using State redevelopment funds</div></div>
+  <div class="tf rev" style="transition-delay:.14s"><div class="tf-n" style="color:var(--gold);">19</div><div class="tf-l">Years the station has stood — zero scheduled stops in nineteen years</div></div>
+  <div class="tf rev" style="transition-delay:.21s"><div class="tf-n">✓</div><div class="tf-l">A Dixon stop is officially proposed in the Capitol Corridor Vision Plan. The infrastructure exists.</div></div>
+</div>
+
+<!-- Demand -->
+<div class="t-demand rev">
+  <div class="td-label">The Case, Simply Stated</div>
+  <div class="td-text">"The station exists. The tracks run through the city. The trains pass every hour. A Dixon stop is in the Vision Plan. Dixon built its station nineteen years ago and has been patient long enough. The Capitol Corridor trains need to stop in Dixon — and this city deserves a leader who will not rest until they do."</div>
+</div>
+```
+
+  </section>
+
+  <!-- ══════════════
+       THE FUTURE
+  ══════════════ -->
+
+  <section class="s s-cream" id="future">
+    <div class="ch-label rev">Chapter Five · What Comes Next</div>
+    <h2 class="s-h rev">The ingredients for something<br>extraordinary are <em>already here.</em></h2>
+    <div class="vision-grid">
+      <div class="vc rev">
+        <div class="vc-n">01</div>
+        <span class="vc-ico">🚂</span>
+        <div class="vc-title">Activate the Station</div>
+        <p class="vc-body">A Capitol Corridor stop transforms Dixon's entire story. <strong>Bay Area commuters. Remote workers. Sacramento professionals.</strong> Dixon becomes connectable and desirable. One infrastructure win this city has already paid for and waited nineteen years to receive.</p>
+      </div>
+      <div class="vc rev" style="transition-delay:.07s">
+        <div class="vc-n">02</div>
+        <span class="vc-ico">🌾</span>
+        <div class="vc-title">Own the Agricultural Legacy</div>
+        <p class="vc-body">The Lamb Capital of the World. California's oldest fair. A 60-acre world record. <strong>Dixon's agricultural identity is a competitive advantage</strong> in an era that is rediscovering local food, authentic place, and rural character. No city in this corridor has what Dixon has.</p>
+      </div>
+      <div class="vc rev" style="transition-delay:.14s">
+        <div class="vc-n">03</div>
+        <span class="vc-ico">🏛️</span>
+        <div class="vc-title">Build a Regional Voice</div>
+        <p class="vc-body">Dixon, Winters, Woodland, Davis. Four cities sharing a corridor, a climate, and a future. <strong>The vision that unites them</strong> under common infrastructure and shared leadership would create one of California's most compelling regional stories over the next generation.</p>
+      </div>
+      <div class="vc rev" style="transition-delay:.03s">
+        <div class="vc-n">04</div>
+        <span class="vc-ico">🎡</span>
+        <div class="vc-title">Claim the Cultural Capital</div>
+        <p class="vc-body">California's oldest district fair. Two National Register of Historic Places properties. Jon Pardi's hometown. A Guinness World Record. <strong>Dixon has more cultural gravity</strong> than it claims. The right leadership makes this a destination — not a place people drive past on I-80.</p>
+      </div>
+      <div class="vc rev" style="transition-delay:.1s">
+        <div class="vc-n">05</div>
+        <span class="vc-ico">📡</span>
+        <div class="vc-title">Amplify the Signal</div>
+        <p class="vc-body">Dixon once broadcast America's voice across the Pacific. That history is a metaphor worth keeping: <strong>this city has always had something worth saying.</strong> It needs the platform — and the leadership — to say it loudly enough that Sacramento cannot ignore it.</p>
+      </div>
+      <div class="vc rev" style="transition-delay:.17s">
+        <div class="vc-n">06</div>
+        <span class="vc-ico">🔥</span>
+        <div class="vc-title">Remember Who We Are</div>
+        <p class="vc-body">Dixon's founders moved a city to meet opportunity. That is the standard every generation must meet. <strong>The city that waited nineteen years for a train to stop</strong> is not the city that moved itself in 1868. It is time to remember who Dixon is — and act accordingly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════
+       CLOSING
+  ══════════════ -->
+
+  <section class="close-wrap">
+    <div class="close-inner">
+      <div class="ch-label inv rev">Good Morning Dixon</div>
+      <h2 class="close-h rev">Dixon's story<br/>is not <em>finished.</em><br/>Not even close.</h2>
+      <div class="close-prose rev">
+        <p>A city that founded itself on the act of moving to meet the future does not accept being passed over. A community that broadcast to the Pacific during a world war does not accept silence from Sacramento. A city that holds a Guinness World Record does not accept the bottom of any list.</p>
+        <p><strong>Dixon deserves better than it has been given.</strong> Better infrastructure. Better representation. A train that stops at the station built with public money in 2007, that has been standing and waiting for nineteen years.</p>
+        <p>Good Morning Dixon exists to tell this story — week after week, honestly, without permission — until the people who need to hear it can no longer pretend they haven't.</p>
+      </div>
+      <div class="close-sig rev">
+        <div class="cs-mark">G</div>
+        <div>
+          <div class="cs-name">Good Morning Dixon</div>
+          <div class="cs-role">The Independent Weekly Gazette &nbsp;·&nbsp; Dixon, California &nbsp;·&nbsp; Est. 2026 &nbsp;·&nbsp; <a href="mailto:lucas@goodmorningdixon.com">lucas@goodmorningdixon.com</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="f-logo">Good Morning <em>Dixon</em> &nbsp;·&nbsp; Dixon, CA 95620</div>
+    <div class="f-legal">© 2026 Good Morning Dixon &nbsp;·&nbsp; <a href="mailto:lucas@goodmorningdixon.com">lucas@goodmorningdixon.com</a> &nbsp;·&nbsp; <a href="https://goodmorningdixon.com">goodmorningdixon.com</a></div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cur=document.getElementById('cur'),cr=document.getElementById('cr');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+    (function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(loop);})();
+    document.querySelectorAll('a,button,.hc,.vc,.tf,.ss,.tr-item').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{cur.style.width='13px';cur.style.height='13px';cr.style.width='38px';cr.style.height='38px';cr.style.borderColor='rgba(196,154,32,.55)';});
+      el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';cr.style.width='28px';cr.style.height='28px';cr.style.borderColor='rgba(196,154,32,.35)';});
+    });
+
+    // Progress
+    window.addEventListener('scroll',()=>{document.getElementById('prog').style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';});
+
+    // Reveal
+    const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.06});
+    document.querySelectorAll('.rev').forEach(el=>obs.observe(el));
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const t=document.querySelector(a.getAttribute('href'));
+        if(t){e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-56,behavior:'smooth'});}
+      });
+    });
+
+    // Ticker
+    const track=document.getElementById('ticker');
+    if(track){
+      const clone=track.cloneNode(true);
+      track.parentNode.appendChild(clone);
+      let x=0;
+      (function run(){x-=.65;if(Math.abs(x)>=track.scrollWidth+64)x=0;track.style.transform=`translateX(${x}px)`;clone.style.transform=`translateX(${x+track.scrollWidth+64}px)`;requestAnimationFrame(run);})();
+    }
+  </script>
+
+</body>
+</html>
